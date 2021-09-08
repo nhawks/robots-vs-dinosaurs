@@ -10,4 +10,4 @@ class Weapon:
       return attack_power
 
 
-Weapon("sword")
+# Weapon("sword")
