@@ -3,12 +3,16 @@ from robot import Robot
 
 class Fleet:
 
-  #list of created robots copied from Robot.created_robots
-  robot_fleet = Robot.created_robots.copy()
-
   def __init__ (self):
-    pass
+    self.robots = []
+    self.create_fleet()
  
+  #create a fleet of robots and append to self.robots
   def create_fleet (self): #void
-    pass
+    robot_one = (Robot("Vanquish-X4"))
+    robot_two = (Robot("Neon-VX4"))
+    robot_three = (Robot("Leo-BE3"))
+    self.robots.append(robot_one)
+    self.robots.append(robot_two)
+    self.robots.append(robot_three)
   #end of class Fleet
