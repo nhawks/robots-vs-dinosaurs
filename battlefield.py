@@ -47,12 +47,8 @@ class Battlefield:
     opponent = self.fleet.robots[opponent_index]
     print(f"\n{dinosaur.dinosaur_name} vs. {opponent.robot_name}")
     dinosaur.attack(opponent)
-
+    self.check_robot_health(opponent, dinosaur)
     #TODO: add optiont to select the fighter's weapon
-    #old cold below
-    # self.herd.dinosaur.attack(opponent)
-    # fighter = int(input("Please select one number to select the fighter you'd like to choose: "))
-    # dinosaur = self.herd.dinosaurs[fighter]
 
   def robot_turn (self, robot): #void
     robot = self.fleet.robots[robot]
@@ -62,9 +58,8 @@ class Battlefield:
     opponent = self.herd.dinosaurs[opponent_index]
     print(f"\n{robot.robot_name} vs. {opponent.dinosaur_name}")
     robot.attack(opponent)
+    self.check_dino_health(opponent, robot)
     #TODO: add optiont to select the fighter's weapon
-    self.next_team = "herd"
-
 
   def show_dinosaur_opponent_options (self): #void
     for dinosaur in self.herd.dinosaurs:
@@ -74,8 +69,19 @@ class Battlefield:
     for robot in self.fleet.robots:
       print(f"{self.fleet.robots.index(robot)} - {robot.robot_name} | Health: {robot.robot_health}")
 
-        
-     
+  #methods to determine if robot/dinosaur health > 0, if not remove from game (list)
+  def check_dino_health(self, dinosaur, robot):
+    if dinosaur.dinosaur_health <= 0:
+      self.herd.dinosaurs.remove(dinosaur)
+      print(f"{robot.robot_name} defeated {dinosaur.dinosaur_name}")
+  
+  def check_robot_health(self, robot, dinosaur):
+    if robot.robot_health <= 0:
+      self.fleet.robots.remove(robot)
+      print(f"{dinosaur.dinosaur_name} defeated {robot.robot_name}")
+
+
+    
 
   def display_winners (self): #void
     pass
