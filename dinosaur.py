@@ -8,9 +8,8 @@ class Dinosaur:
   #attack selected robot
   def attack (self, robot): #void
     robot.robot_health -= self.attack_power
-    print
-    (
-      f"{self.dinosaur_name} attacked {robot.robot_name}!\n\
-      Dealing {self.attack_power} damage!\n\
-      {robot.robot_name}'s Health is now: {robot.robot_health}/10!"
-    )
+    print (
+f"{self.dinosaur_name} attacked {robot.robot_name}!\n\
+Dealing {self.attack_power} damage!\n\
+{robot.robot_name}'s Health is now: {robot.robot_health}/10!"
+)
