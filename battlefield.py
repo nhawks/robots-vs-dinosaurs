@@ -1,3 +1,4 @@
+from weapon import Weapon
 from fleet import Fleet
 from herd import Herd
 
@@ -43,8 +44,35 @@ class Battlefield:
     fighter = int(input("\nPlease enter a number to select the robot you'd like to choose: "))
     self.robot_turn(fighter)
 
-  ##*methods that attack the opposite team member by selection 
-  #then calls a method to determine if opponenet's health > 0
+  #* robot and dinosaur attack selection methods
+
+  #*prompts the robot to select a weapon
+  def pick_robot_weapon (self, robot):
+    self.robot = robot
+
+    #?run if robot doesn't have a weapon, else skip
+    if self.robot.robot_weapon.weapon_name == "":
+
+      #?store new weapon values in loadout which calls Weapon class
+      loadout = Weapon( input(
+      f"Fleet Weapons {self.fleet.fleet_weapons}\n"\
+      "Please enter the name of the weapon you'd like to choose: ").lower() )
+
+      #?assign new weapon values based on selection
+      self.robot.robot_weapon.weapon_name = loadout.weapon_name
+      self.robot.robot_weapon.weapon_damage = loadout.weapon_damage
+      
+      #?once weapon is selected del from list so other robots can't choose the weapon
+      weapon_index = self.fleet.fleet_weapons.index(loadout.weapon_name)
+      del self.fleet.fleet_weapons[weapon_index]
+      return self.robot #return robot new weapon values
+
+  #TODO prompts the dinosaur to select an attack
+  def pick_dino_attack (self, dinosaur):
+    pass
+
+  #*methods that attack the opposite team member by selection 
+  #*then calls a method to determine if opponenet's health > 0
   def dinosaur_turn (self, dinosaur): #void
     dinosaur = self.herd.dinosaurs[dinosaur]
     print(f"You chose: {dinosaur.dinosaur_name.upper()}\n"\
@@ -55,10 +83,10 @@ class Battlefield:
     print(f"\n{dinosaur.dinosaur_name.upper()} vs. {opponent.robot_name.upper()}")
     dinosaur.attack(opponent)
     self.check_robot_health(opponent, dinosaur, opponent_index)
-    #TODO: add optiont to select the fighter's weapon
 
   def robot_turn (self, robot): #void
     robot = self.fleet.robots[robot]
+    self.pick_robot_weapon(robot)
     print(f"You chose: {robot.robot_name.upper()}\n"\
           "\nTHE HERD: Defending - Choose your opponent!")
     self.show_dinosaur_opponent_options()
@@ -67,7 +95,6 @@ class Battlefield:
     print(f"\n{robot.robot_name.upper()} vs. {opponent.dinosaur_name.upper()}")
     robot.attack(opponent)
     self.check_dino_health(opponent, robot, opponent_index)
-    #TODO: add optiont to select the fighter's weapon
 
   ##*methods that display the current robots/dinosaurs and their health
   def show_dinosaur_opponent_options (self): #void
@@ -78,7 +105,7 @@ class Battlefield:
     for robot in self.fleet.robots:
       self.show_robot_info(robot)
 
-  ##*methods for displaying info for a robot/dinosaur
+  #*methods for displaying info for a robot/dinosaur
   def show_dinosaur_info (self, dinosaur):
     self.dinosaur = dinosaur
     print(f"{self.herd.dinosaurs.index(dinosaur)} - {dinosaur.dinosaur_name} | "\
@@ -91,7 +118,7 @@ class Battlefield:
           f"Health: {robot.robot_health}/10 | "\
           f"Energy Level: {robot.robot_power_level}/100")
 
-  ##*methods to determine if robot/dinosaur health > 0, if not remove from game (del list[i])
+  #*methods to determine if robot/dinosaur health > 0, else remove from game (del list[i])
   def check_dino_health(self, dinosaur, robot, dino_index):
     self.dino_index = dino_index
     if dinosaur.dinosaur_health <= 0:
@@ -104,7 +131,7 @@ class Battlefield:
       del self.fleet.robots[robot_index]
       print(f"\n{dinosaur.dinosaur_name.upper()} DEFEATED {robot.robot_name.upper()}!")
 
-  ##*runs if the herd or fleet len(list) == 0
+  #*runs if the herd or fleet len(list) == 0
   def display_winners (self): #void
     if len(self.fleet.robots) == 0:
       print("\nTHE HERD WINS: The Fleet was defeated!\nGAME OVER!")
