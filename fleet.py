@@ -1,7 +1,10 @@
+from weapon import Weapon
 from robot import Robot
 
 
 class Fleet:
+
+  fleet_weapons = ["sword", "laser", "handcannon"]
 
   def __init__ (self):
     self.robots = []
