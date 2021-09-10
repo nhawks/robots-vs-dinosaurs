@@ -128,9 +128,10 @@ class Battlefield:
     self.robot = robot
     print(f"{self.fleet.robots.index(robot)} - {robot.robot_name} | "\
           f"Health: {robot.robot_health}/10 | "\
-          f"Energy Level: {robot.robot_power_level}/100")
+          f"Power Level: {robot.robot_power_level}/100")
 
   #*methods to determine if robot/dinosaur health > 0, else remove from game (del list[i])
+  #! NOTE for instructor: I had to use del because remove would re-populate the list when I called display_winners
   def check_dino_health(self, dinosaur, robot, dino_index):
     self.dino_index = dino_index
     if dinosaur.dinosaur_health <= 0:
