@@ -1,6 +1,7 @@
-from weapon import Weapon
 from fleet import Fleet
 from herd import Herd
+from weapon import Weapon
+from dino_attacks import DinoAttacks
 
 
 class Battlefield:
@@ -65,16 +66,27 @@ class Battlefield:
       #?once weapon is selected del from list so other robots can't choose the weapon
       weapon_index = self.fleet.fleet_weapons.index(loadout.weapon_name)
       del self.fleet.fleet_weapons[weapon_index]
-      return self.robot #return robot new weapon values
+      return self.robot #return weapon values in robot
 
-  #TODO prompts the dinosaur to select an attack
+  #*prompts the dinosaur each time before attacking to select an attack
   def pick_dino_attack (self, dinosaur):
-    pass
+    self.dinosaur = dinosaur
+
+    #?store values in attack_info which calls DinoAttack Class
+    attack_info = DinoAttacks( input(
+      f"Dinosaur Attacks {self.herd.herd_attacks}\n"\
+      "Please enter the name of the attack you'd like to choose: ").lower() )
+
+    #?assign new attack values based on selection 
+    self.dinosaur.attack_power = attack_info.attack_damage
+    self.dinosaur.attack_name = attack_info.attack_name
+    return self.dinosaur #return attack info in dinosaur
 
   #*methods that attack the opposite team member by selection 
   #*then calls a method to determine if opponenet's health > 0
   def dinosaur_turn (self, dinosaur): #void
     dinosaur = self.herd.dinosaurs[dinosaur]
+    self.pick_dino_attack(dinosaur)
     print(f"You chose: {dinosaur.dinosaur_name.upper()}\n"\
           "\nTHE FLEET: Defending - Choose your opponent!")
     self.show_robot_opponent_options()
