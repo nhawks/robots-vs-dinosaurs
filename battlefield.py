@@ -18,8 +18,11 @@ class Battlefield:
     print("\nWelcome to ROBOTS vs DINOSAURS\nMay the best team win!")
 
   def battle (self): #void
-    while len(self.herd.dinosaurs) > 0 and len(self.fleet.robots) > 0:
-      self.selected_dinosaur(), self.selected_robot()
+    while len(self.herd.dinosaurs) != 0 and len(self.fleet.robots) != 0:
+      if self.herd.dinosaurs:
+        self.selected_dinosaur(), 
+      if self.fleet.robots:
+        self.selected_robot()
       # self.choose_attacking_team()
       # print("\nTHE HERD\n")
       # self.selected_dinosaur()
@@ -47,7 +50,7 @@ class Battlefield:
     opponent = self.fleet.robots[opponent_index]
     print(f"\n{dinosaur.dinosaur_name} vs. {opponent.robot_name}")
     dinosaur.attack(opponent)
-    self.check_robot_health(opponent, dinosaur)
+    self.check_robot_health(opponent, dinosaur, opponent_index)
     #TODO: add optiont to select the fighter's weapon
 
   def robot_turn (self, robot): #void
@@ -58,7 +61,7 @@ class Battlefield:
     opponent = self.herd.dinosaurs[opponent_index]
     print(f"\n{robot.robot_name} vs. {opponent.dinosaur_name}")
     robot.attack(opponent)
-    self.check_dino_health(opponent, robot)
+    self.check_dino_health(opponent, robot, opponent_index)
     #TODO: add optiont to select the fighter's weapon
 
   def show_dinosaur_opponent_options (self): #void
@@ -70,18 +73,21 @@ class Battlefield:
       print(f"{self.fleet.robots.index(robot)} - {robot.robot_name} | Health: {robot.robot_health}")
 
   #methods to determine if robot/dinosaur health > 0, if not remove from game (list)
-  def check_dino_health(self, dinosaur, robot):
+  def check_dino_health(self, dinosaur, robot, dino_index):
+    self.dino_index = dino_index
     if dinosaur.dinosaur_health <= 0:
-      self.herd.dinosaurs.remove(dinosaur)
+      del self.herd.dinosaurs[dino_index]
       print(f"{robot.robot_name} defeated {dinosaur.dinosaur_name}")
   
-  def check_robot_health(self, robot, dinosaur):
+  def check_robot_health(self, robot, dinosaur, robot_index):
+    self.robot_index = robot_index
     if robot.robot_health <= 0:
-      self.fleet.robots.remove(robot)
+      del self.fleet.robots[robot_index]
       print(f"{dinosaur.dinosaur_name} defeated {robot.robot_name}")
 
-
-    
-
+  #runs if the herd or fleet len(list) == 0
   def display_winners (self): #void
-    pass
+    if len(self.fleet.robots) == 0:
+      print("THE HERD WINS: The fleet was defeated!")
+    elif len(self.herd.dinosaurs) == 0:
+      print("THE FLEET WINS: The herd was defeated!")
